@@ -1,43 +1,57 @@
 import React from 'react'
+import axios from 'axios'
+import Movie from './Movie'
 
 class App extends React.Component {
-  constructor(props){
-    super(props);
-    console.log('constructor()');
+  state = {
+    isLoading: true,
+    movies: [],
   }
 
-  // state 는 dynamic data 를 담는 Object 입니다.
-  // state 를 setState 함수를 이용해 변경하면 render() 함수를 호출합니다.
-  state = {
-    count: 0,
-  };
-  add = () => {
-    console.log('add');
-    this.setState((prevState) => {
-      return { count: prevState.count + 1};
-    })
-  };
-  minus = () => {
-    console.log('minus');
-    this.setState((prevState) => {
-      return { count: prevState.count - 1};
-    })
-  }
   render() {
-    console.log(`render()`);
+    const { isLoading, movies } = this.state
+    // const mapToComponent = (data) => {
+    //   return data.map((movie) => {
+    //     return <h4 key={movie.id}>{movie.title}</h4>
+    //   })
+    // }
+    // return (
+    //   <div>
+    //     <span>{isLoading ? 'Loading...' : 'We are ready'}</span>
+    //     {mapToComponent(movies)}
+    //   </div>
+    // )
     return (
       <div>
-        <h1>The number is: {this.state.count}</h1>
-        <button onClick={this.add}>Add</button>
-        <button onClick={this.minus}>Minus</button>
+        {isLoading
+          ? 'Loading...'
+          : movies.map((movie) => (
+              <Movie
+                id={movie.id}
+                year={movie.year}
+                title={movie.title}
+                summary={movie.summary}
+                poster={movie.medium_cover_image}
+                key={movie.id}
+              />
+            ))}
       </div>
     )
   }
-  componentDidMount() {
-    console.log(`componentDidMount()`);
+
+  getMovies = async () => {
+    const {
+      data: {
+        data: { movies },
+      },
+    } = await axios.get(
+      'https://yts-proxy.now.sh/list_movies.json?sort_by=rating'
+    )
+    this.setState({ isLoading: false, movies })
   }
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log(`componentDidUpdate()`);
+
+  componentDidMount() {
+    this.getMovies()
   }
 }
 
