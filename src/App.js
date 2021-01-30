@@ -1,22 +1,47 @@
 import React from 'react'
 
-function Food({favorite}) {
-  return <h3>I love {favorite}</h3>
+function Food({ name, picture }) {
+  return (
+    <div>
+      <h2>I love {name}</h2>
+      <img src={picture} width="200px" alt="" />
+    </div>
+  )
 }
 
-function Food2(props) {
-  return <h3>I love {props.favorite}</h3>
-}
+const foodILike = [
+  {
+    id: 1,
+    name: 'kimchi',
+    image: 'https://cdn.imweb.me/thumbnail/20200415/bb2adfaee6702.png',
+  },
+  {
+    id: 2,
+    name: 'kimbob',
+    image:
+      'https://homecuisine.co.kr/files/attach/images/140/001/083/558d170258752df2dd76bef00861497f.JPG',
+  },
+  {
+    id: 3,
+    name: 'gogi',
+    image:
+      'https://static.hubzum.zumst.com/hubzum/2018/12/05/13/38035029939e44f3b76c6a0ddae80842.jpg',
+  },
+  {
+    id: 4,
+    name: 'hamburger',
+    image:
+      'https://image.chosun.com/sitedata/image/202001/13/2020011303147_0.jpg',
+  },
+]
 
+// listItem 에 key 가 없으면 안된다는 오류가 떠서, id를 지정해주고 key 로 넘겨줌.
 function App() {
   return (
     <div>
-      <h1>Hello!!</h1>
-      <Food favorite="kimchi" />
-      <Food favorite="kimbob" />
-      <Food favorite="gogi" />
-      <Food favorite="hamburger" />
-      <Food2 favorite="hamburger2" />
+      {foodILike.map((food) => {
+        return <Food name={food.name} picture={food.image} key={food.id} />
+      })}
     </div>
   )
 }
