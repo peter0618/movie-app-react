@@ -22,10 +22,14 @@ class App extends React.Component {
     //   </div>
     // )
     return (
-      <div>
-        {isLoading
-          ? 'Loading...'
-          : movies.map((movie) => (
+      <section className="container">
+        {isLoading ? (
+          <div className="loader">
+            <span className="loader__text">Loading...</span>
+          </div>
+        ) : (
+          <div className="movies">
+            {movies.map((movie) => (
               <Movie
                 id={movie.id}
                 year={movie.year}
@@ -35,7 +39,9 @@ class App extends React.Component {
                 key={movie.id}
               />
             ))}
-      </div>
+          </div>
+        )}
+      </section>
     )
   }
 
